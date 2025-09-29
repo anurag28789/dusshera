@@ -14,6 +14,7 @@
             font-size: 2.4em;
             margin-bottom: 20px;
             color: #d72638;
+            transition: color 0.3s ease;
         }
         .image-row {
             display: flex;
@@ -76,11 +77,11 @@
     </style>
 </head>
 <body>
-    <div class="big-title">Anurag’s Exclusive Maggi Party 🎉</div>
+    <div class="big-title" id="title">Anurag’s Exclusive Maggi Party 🎉</div>
 
-    <div class="image-row">
-        <img src="image2.gif" alt="Maggi GIF 1" />
-        <img src="image3.gif" alt="Maggi GIF 2" />
+    <div class="image-row" id="imageRow">
+        <img src="image1.gif" alt="Maggi GIF 1" />
+        <img src="image2.gif" alt="Maggi GIF 2" />
     </div>
 
     <div>
@@ -91,7 +92,7 @@
     </div>
 
     <div class="popup" id="popup"></div>
-    <img id="penguinGif" src="image1.gif" alt="Penguin GIF" />
+    <img id="penguinGif" src="image3.gif" alt="Penguin GIF" />
     <div class="lockout" id="lockout-msg">
         Better luck next time! <br>
         Maggi party is over for you 😜
@@ -105,42 +106,52 @@
             "No stealing! Yeh Maggi mere liye hi bani hai. <br> Khao toh sirf virtuaaaaaaal bite!"
         ];
         let clickCount = 0;
-        const maxClicks = 5; // After 5 clicks, lock the page!
+        const maxClicks = 5;
 
         function teaseClick(idx) {
             if (clickCount >= maxClicks) {
                 return;
             }
-            document.getElementById("popup").style.display = "block";
-            document.getElementById("popup").innerHTML = messages[idx % messages.length];
+            const popup = document.getElementById('popup');
+            const penguinGif = document.getElementById('penguinGif');
+            const imageRow = document.getElementById('imageRow');
+            const title = document.getElementById('title');
 
-            const penguinGif = document.getElementById("penguinGif");
-            const imageRow = document.querySelector(".image-row");
+            popup.style.display = "block";
+            popup.innerHTML = messages[idx % messages.length];
+
+            // Reset title color and text style for all except 'steal' case
+            title.style.color = '#d72638';
+            title.style.fontWeight = 'normal';
 
             if (idx === 2) {
-                // Hide other GIFs
                 imageRow.style.display = "none";
-                // Show penguin GIF
                 penguinGif.style.display = "block";
+
+                title.textContent = "Maggi Alarm! Guard On Duty 🚨";
+
+                alert("Arey! Maggi chhupake kaha le ja rahi ho? 😠");
             } else {
-                // Show other GIFs
                 imageRow.style.display = "flex";
-                // Hide penguin GIF
                 penguinGif.style.display = "none";
+                title.textContent = "Anurag’s Exclusive Maggi Party 🎉";
             }
 
             clickCount++;
             if (clickCount === maxClicks) {
                 document.querySelectorAll(".tease-btn").forEach(btn => btn.disabled = true);
                 setTimeout(() => {
-                    document.getElementById("popup").style.display = "none";
+                    popup.style.display = "none";
                     imageRow.style.display = "none";
                     penguinGif.style.display = "none";
-                    document.getElementById("lockout-msg").style.display = "block";
-                }, 1500);
+                    title.textContent = "Maggi Party Over! See you next time 😜";
+                    popup.style.display = "block";
+                    popup.innerHTML = "Thanks for playing! No more Maggi today.";
+                    popup.style.color = 'green';
+                    popup.style.fontWeight = 'bold';
+                }, 1600);
             }
         }
     </script>
 </body>
 </html>
-
