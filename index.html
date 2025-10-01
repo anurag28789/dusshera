@@ -7,14 +7,19 @@
 <style>
   body, html {
     margin: 0; padding: 0; background: #f9f0e9; width: 100vw; height: 100vh;
-    overflow: hidden; font-family: Arial, sans-serif;
+    font-family: Arial, sans-serif;
   }
 
   #game-container {
-    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-end;
     width: 100vw;
     height: 100vh;
+    position: relative;
     touch-action: manipulation;
+    overflow: hidden;
   }
 
   #message {
@@ -31,25 +36,20 @@
     max-width: 98vw;
   }
 
-  /* Default styles for mobile portrait view */
   #ravana {
-    position: absolute;
+    max-width: 50vw;
+    width: auto;
     height: 60vh;
-    top: 10vh;
-    left: 5vw;
-    z-index: 2;
-    transition: opacity 1s;
+    object-fit: contain;
     user-select: none;
     pointer-events: none;
   }
 
   #girl, #girl_after {
-    position: absolute;
+    max-width: 30vw;
+    width: auto;
     height: 25vh;
-    right: 5vw;
-    bottom: 5vh;
-    z-index: 2;
-    transition: opacity 0.5s;
+    object-fit: contain;
     user-select: none;
     pointer-events: all;
   }
@@ -68,20 +68,21 @@
     pointer-events: none;
   }
 
-  /* Styles for mobile landscape view */
+  /* Landscape specific styles */
   @media (orientation: landscape) {
     #message { font-size: 5vw; top: 2vh; }
 
     #ravana {
       height: 70vh;
-      left: 10vw;
-      top: 15vh;
+      max-width: 40vw;
+      margin-left: 10vw;
     }
-    
+
     #girl, #girl_after {
-      height: 50vh;
-      right: 10vw;
-      bottom: 5vh;
+      height: 45vh;
+      max-width: 25vw;
+      margin-right: 10vw;
+      align-self: flex-end;
     }
 
     #arrow {
@@ -91,26 +92,43 @@
     }
   }
 
-  /* Styles for desktop use */
+  /* Desktop view */
   @media (min-width: 701px) {
     #message { font-size: 6vw; top: 2vh; }
-    
-    #ravana { 
+
+    #ravana {
       height: 75vh;
-      top: 6vh;
-      left: 10vw;
+      max-width: 35vw;
+      margin-left: 10vw;
     }
-    
-    #girl, #girl_after { 
+
+    #girl, #girl_after {
       height: 27vh;
-      right: 5vw;
-      bottom: 0;
+      max-width: 20vw;
+      margin-right: 5vw;
+      align-self: flex-end;
     }
-    
-    #arrow { 
-      height: 8vh; 
+
+    #arrow {
+      height: 8vh;
       right: 18vw;
       bottom: 14vh;
+    }
+  }
+
+  /* Adjust for very small devices in portrait */
+  @media (max-device-width: 600px) and (orientation: portrait) {
+    #ravana {
+      height: 40vh;
+      max-width: 80vw;
+      margin-left: 2vw;
+    }
+
+    #girl, #girl_after {
+      height: 20vh;
+      max-width: 50vw;
+      margin-right: 2vw;
+      align-self: flex-end;
     }
   }
 </style>
@@ -151,14 +169,12 @@
       arrowEndRight = '75vw';
       arrowEndBottom = '58vh';
     } else {
-      // Default portrait mobile styles
       arrow.style.right = '15vw';
       arrow.style.bottom = '12vh';
       arrowEndRight = '75vw'; 
       arrowEndBottom = '50vh';
     }
 
-    // Arrow flight path adjusted to hit Ravana
     setTimeout(() => {
       arrow.style.right = arrowEndRight;
       arrow.style.bottom = arrowEndBottom;
