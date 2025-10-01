@@ -120,14 +120,13 @@
     girl_after.style.display = 'block';
     arrow.style.display = 'block';
 
-    let arrowStartRight = parseFloat(window.getComputedStyle(arrow).right);
-    let arrowStartBottom = parseFloat(window.getComputedStyle(arrow).bottom);
+    const arrowStartRight = parseFloat(window.getComputedStyle(arrow).right);
+    const arrowStartBottom = parseFloat(window.getComputedStyle(arrow).bottom);
 
-    // Calculate target positions near Ravana
-    let arrowEndRight = window.innerWidth * 0.75; // roughly left 10vw as px from right edge's perspective
-    let arrowEndBottom = window.innerHeight * 0.75; // roughly Ravana top 10vh
+    // Approximate target position near Ravana
+    const arrowEndRight = window.innerWidth * 0.75;
+    const arrowEndBottom = window.innerHeight * 0.75;
 
-    // Animate arrow diagonally to Ravana's position
     arrow.style.right = arrowStartRight + 'px';
     arrow.style.bottom = arrowStartBottom + 'px';
 
