@@ -19,50 +19,74 @@
     user-select: none;
   }
   #message {
-    position: absolute; width: 100%; top: 2vh; left: 50%; transform: translateX(-50%);
-    font-size: 6vw; color: #d35400; text-align: center;
-    text-shadow: 1px 1px 4px #fff; z-index: 10;
+    width: 90%;
+    margin: 4vh auto 0 auto;
+    font-size: 3vw;
+    color: #d35400;
+    text-align: center;
+    text-shadow: 1px 1px 4px #fff;
+    white-space: pre-line;
+    z-index: 10;
   }
   #ravana {
     position: absolute;
-    top: 10vh;
-    left: 10vw;
-    height: 50vh;
-    max-width: 40vw;
+    top: 15vh;
+    left: -9vw;
+    height: 45vh;
+    max-width: 70vw;
     object-fit: contain;
     pointer-events: none;
     user-select: none;
     transition: height 0.3s, max-width 0.3s, top 0.3s, left 0.3s;
   }
+  #click-here {
+    position: absolute;
+    bottom: 10vh;
+    right: 42vw;
+    font-size: 2vw;
+    color: #d35400;
+    font-weight: bold;
+    user-select: none;
+    cursor: pointer;
+    text-shadow: 1px 1px 3px #fff;
+    white-space: nowrap;
+    z-index: 20;
+  }
   #girl, #girl_after {
     position: absolute;
-    bottom: 5vh; right: 10vw;
-    height: 20vh; max-width: 30vw;
-    object-fit: contain; pointer-events: all; user-select: none; cursor: pointer;
+    bottom: 5vh;
+    right: 10vw;
+    height: 20vh;
+    max-width: 30vw;
+    object-fit: contain;
+    pointer-events: all;
+    user-select: none;
+    cursor: pointer;
   }
   #girl_after { display: none; }
   #arrow {
     position: absolute;
-    bottom: 15vh; right: 25vw;
-    height: 6vh; max-width: 6vw;
-    pointer-events: none; user-select: none; z-index: 5; display: none;
+    bottom: 15vh;
+    right: 25vw;
+    height: 6vh;
+    max-width: 6vw;
+    pointer-events: none;
+    user-select: none;
+    z-index: 5;
+    display: none;
     transition: bottom 1.3s linear, right 1.3s linear;
-  }
-  /* Ravana bigger on mobile */
-  @media (max-width: 600px) {
-    #ravana {
-      top: 10vh;
-      left: -10vw;
-      height: 45vh;
-      max-width: 70vw;
-    }
   }
   @media (min-width: 700px), (orientation: landscape) {
     #ravana {
-      top: 15vh;
+      top: 35vh;
       left: 15vw;
       height: 60vh;
       max-width: 30vw;
+    }
+    #click-here {
+      bottom: 20vh;
+      right: 55vw;
+      font-size: 2vw;
     }
     #girl, #girl_after {
       bottom: 8vh;
@@ -81,8 +105,14 @@
 </head>
 <body>
 <div id="game-container">
-  <div id="message">Aim and click the arrow to burn Ravana!</div>
+  <div id="message">
+    Hey Sweetie, today you’re not just burning Ravana—  
+    you’re burning your worries, fears, and all that weighs you down.  
+    Stand tall, take that arrow of courage, and set your spirit free.  
+    This is your new beginning.
+  </div>
   <img id="ravana" src="ravan-animated.png" alt="Ravana" />
+  <div id="click-here">Click Here →</div>
   <img id="girl" src="archer.png" alt="Girl before shot" />
   <img id="girl_after" src="archerwithout aero.jpg" alt="Girl after shot" />
   <img id="arrow" src="aero.jpg" alt="Arrow" />
@@ -93,12 +123,14 @@
   const girl_after = document.getElementById('girl_after');
   const arrow = document.getElementById('arrow');
   const message = document.getElementById('message');
+  const clickHere = document.getElementById('click-here');
 
   function animateShot() {
     girl.style.display = 'none';
     girl_after.style.display = 'block';
     arrow.style.display = 'block';
-
+    clickHere.style.display = 'none';
+    
     const arrowStartRight = parseFloat(window.getComputedStyle(arrow).right);
     const arrowStartBottom = parseFloat(window.getComputedStyle(arrow).bottom);
 
@@ -115,10 +147,8 @@
 
     setTimeout(() => {
       arrow.style.display = 'none';
-      // Change Ravana to burned image and update message
       ravana.src = 'ravan-burned.png';
-      message.textContent = 'Ravana is burned! Happy Dussehra! 🎉';
-      // No replay or reset here
+      message.textContent = `You did it, Sweetie!\nYou lit up your path by letting go of what held you back.\nHappy Dussehra, my dear!\nMay the days ahead be filled with light, laughter, big dreams, and a heart full of joy.\nTogether, we celebrate your strength and every beautiful victory.`;
     }, 1300);
   }
 
