@@ -38,7 +38,7 @@
   #ravana {
     position: absolute;
     top: 10vh;
-    right: 10vw;
+    left: 10vw;
     height: 50vh;
     max-width: 40vw;
     object-fit: contain;
@@ -49,7 +49,7 @@
   #girl, #girl_after {
     position: absolute;
     bottom: 5vh;
-    left: 10vw;
+    right: 10vw;
     height: 20vh;
     max-width: 20vw;
     object-fit: contain;
@@ -65,34 +65,34 @@
   #arrow {
     position: absolute;
     bottom: 15vh;
-    left: 25vw;
+    right: 25vw;
     height: 6vh;
     max-width: 6vw;
     pointer-events: none;
     user-select: none;
     z-index: 5;
     display: none;
-    transition: bottom 1.3s linear, left 1.3s linear;
+    transition: bottom 1.3s linear, right 1.3s linear;
   }
 
   @media (min-width: 700px), (orientation: landscape) {
     #ravana {
       top: 15vh;
-      right: 15vw;
+      left: 15vw;
       height: 60vh;
       max-width: 30vw;
     }
 
     #girl, #girl_after {
       bottom: 8vh;
-      left: 15vw;
+      right: 15vw;
       height: 30vh;
       max-width: 15vw;
     }
 
     #arrow {
       bottom: 20vh;
-      left: 32vw;
+      right: 32vw;
       height: 8vh;
       max-width: 5vw;
     }
@@ -120,17 +120,19 @@
     girl_after.style.display = 'block';
     arrow.style.display = 'block';
 
-    let arrowStartLeft = parseFloat(window.getComputedStyle(arrow).left);
+    let arrowStartRight = parseFloat(window.getComputedStyle(arrow).right);
     let arrowStartBottom = parseFloat(window.getComputedStyle(arrow).bottom);
 
-    let arrowEndLeft = window.innerWidth * 0.75; // aligns near Ravana's right offset
-    let arrowEndBottom = window.innerHeight * 0.75; // aligns near Ravana's top offset
+    // Calculate target positions near Ravana
+    let arrowEndRight = window.innerWidth * 0.75; // roughly left 10vw as px from right edge's perspective
+    let arrowEndBottom = window.innerHeight * 0.75; // roughly Ravana top 10vh
 
-    arrow.style.left = arrowStartLeft + 'px';
+    // Animate arrow diagonally to Ravana's position
+    arrow.style.right = arrowStartRight + 'px';
     arrow.style.bottom = arrowStartBottom + 'px';
 
     setTimeout(() => {
-      arrow.style.left = arrowEndLeft + 'px';
+      arrow.style.right = arrowEndRight + 'px';
       arrow.style.bottom = arrowEndBottom + 'px';
     }, 40);
 
@@ -145,7 +147,7 @@
       girl.style.display = 'block';
       girl_after.style.display = 'none';
       message.textContent = 'Aim and click the arrow to burn Ravana!';
-      arrow.style.left = arrowStartLeft + 'px';
+      arrow.style.right = arrowStartRight + 'px';
       arrow.style.bottom = arrowStartBottom + 'px';
     }, 4600);
   }
