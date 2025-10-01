@@ -33,8 +33,8 @@
 
   #ravana {
     position: absolute;
-    left: 2vw;
-    top: 2vh;
+    left: 10vw;
+    top: 6vh;
     height: 75vh;
     z-index: 2;
     transition: opacity 1s;
@@ -44,8 +44,8 @@
 
   #girl, #girl_after {
     position: absolute;
-    right: 2vw;
-    bottom: 2vh;
+    right: 5vw;
+    bottom: 0;
     height: 27vh;
     z-index: 2;
     transition: opacity 0.5s;
@@ -67,20 +67,21 @@
     pointer-events: none;
   }
 
-  @media (max-width: 700px) {
+  /* Styles for mobile portrait view */
+  @media (orientation: portrait) and (max-width: 700px) {
     #message { font-size: 7vw; top: 2vh; }
     
     #ravana { 
       height: 60vh;
-      top: 2vh;
-      left: 2vw;
+      top: 10vh;
+      left: 5vw;
       transform: none; 
     }
     
     #girl, #girl_after { 
       height: 25vh;
-      right: 2vw;
-      bottom: 2vh;
+      right: 5vw;
+      bottom: 5vh;
       transform: none; 
     }
     
@@ -89,6 +90,29 @@
       right: 15vw;
       bottom: 12vh;
       transform: none; 
+    }
+  }
+
+  /* New styles for mobile landscape view */
+  @media (orientation: landscape) and (max-height: 700px) {
+    #message { font-size: 5vw; top: 2vh; }
+
+    #ravana {
+      height: 80vh; 
+      left: 5vw;
+      top: 10vh;
+    }
+    
+    #girl, #girl_after {
+      height: 50vh;
+      right: 5vw;
+      bottom: 5vh;
+    }
+
+    #arrow {
+      height: 8vh;
+      right: 25vw;
+      bottom: 25vh;
     }
   }
 </style>
@@ -114,26 +138,23 @@
     girl_after.style.display = 'block';
     arrow.style.display = 'block';
 
-    const isMobile = window.matchMedia("(max-width: 700px)").matches;
-    let arrowStartRight, arrowStartBottom, arrowEndRight, arrowEndBottom;
+    const isLandscape = window.matchMedia("(orientation: landscape) and (max-height: 700px)").matches;
+    let arrowEndRight, arrowEndBottom;
 
-    if (isMobile) {
-      arrowStartRight = '15vw';
-      arrowStartBottom = '12vh';
+    if (isLandscape) {
+      arrow.style.right = '25vw';
+      arrow.style.bottom = '25vh';
+      arrowEndRight = '80vw'; 
+      arrowEndBottom = '35vh';
+    } else {
+      // Styles for portrait and desktop
+      arrow.style.right = '15vw';
+      arrow.style.bottom = '12vh';
       arrowEndRight = '75vw'; 
       arrowEndBottom = '50vh';
-    } else {
-      arrowStartRight = '18vw';
-      arrowStartBottom = '14vh';
-      arrowEndRight = '75vw';
-      arrowEndBottom = '58vh';
     }
-    
-    // Set arrow start position near the girl on bottom-right
-    arrow.style.right = arrowStartRight;
-    arrow.style.bottom = arrowStartBottom;
 
-    // Animate arrow moving leftward toward Ravana by increasing right property
+    // Arrow flight path adjusted to hit Ravana
     setTimeout(() => {
       arrow.style.right = arrowEndRight;
       arrow.style.bottom = arrowEndBottom;
