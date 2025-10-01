@@ -72,26 +72,24 @@
     
     /* MODIFIED Ravana position for mobile */
     #ravana { 
-      height: 50vh; 
-      top: 20vh;
-      left: 15vw; /* Moved Ravana to the left from 5vw to 15vw */
+      height: 60vh; /* Adjust height to a reasonable size for mobile */
+      top: 15vh;    /* Adjust top position to move Ravana up */
+      left: 10vw;   /* Match the desktop's left position */
       transform: none; 
     }
     
     /* MODIFIED Archer Girl position for mobile */
     #girl, #girl_after { 
-      height: 22vh; 
-      right: initial; /* Remove right property */
-      left: 12vw; /* Use left property to position the girl */
-      bottom: 2vh; 
+      height: 25vh;  /* Adjust height to a reasonable size for mobile */
+      right: 5vw;   /* Match the desktop's right position */
+      bottom: 2vh;  /* Adjust bottom position to move her up slightly */
       transform: none; 
     }
     
     /* MODIFIED Arrow position for mobile */
     #arrow { 
       height: 5vh; 
-      right: initial; /* Remove right property */
-      left: 20vw; /* Adjust starting position to align with archer */
+      right: 15vw;  /* Adjust starting position to align with archer */
       bottom: 12vh; /* Adjust starting position to align with archer */
       transform: none; 
     }
@@ -124,11 +122,11 @@
 
     if (isMobile) {
       // Set the initial position of the arrow
-      arrow.style.left = '20vw'; /* Using left instead of right */
+      arrow.style.right = '15vw';
       arrow.style.bottom = '12vh';
 
       // Set the end position for the arrow to hit the new Ravana position
-      arrowEndLeft = '50vw'; /* New value to move the arrow left */
+      arrowEndRight = '70vw'; 
       arrowEndBottom = '45vh';
 
     } else {
@@ -140,13 +138,8 @@
 
     // Arrow flight path adjusted to hit Ravana
     setTimeout(() => {
-      if (isMobile) {
-        arrow.style.left = arrowEndLeft;
-        arrow.style.bottom = arrowEndBottom;
-      } else {
-        arrow.style.right = arrowEndRight;
-        arrow.style.bottom = arrowEndBottom;
-      }
+      arrow.style.right = arrowEndRight;
+      arrow.style.bottom = arrowEndBottom;
     }, 40);
 
     setTimeout(() => {
