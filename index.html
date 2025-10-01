@@ -8,29 +8,20 @@
   body, html {
     margin: 0; padding: 0;
     background: #f9f0e9;
-    width: 100vw;
-    height: 100vh;
+    width: 100vw; height: 100vh;
     font-family: Arial, sans-serif;
     overflow: hidden;
   }
   #game-container {
     position: relative;
-    width: 100vw;
-    height: 100vh;
+    width: 100vw; height: 100vh;
     touch-action: manipulation;
     user-select: none;
   }
   #message {
-    position: absolute;
-    width: 100%;
-    top: 2vh;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 6vw;
-    color: #d35400;
-    text-align: center;
-    text-shadow: 1px 1px 4px #fff;
-    z-index: 10;
+    position: absolute; width: 100%; top: 2vh; left: 50%; transform: translateX(-50%);
+    font-size: 6vw; color: #d35400; text-align: center;
+    text-shadow: 1px 1px 4px #fff; z-index: 10;
   }
   #ravana {
     position: absolute;
@@ -45,51 +36,39 @@
   }
   #girl, #girl_after {
     position: absolute;
-    bottom: 5vh;
-    right: 10vw;
-    height: 30vh;
-    max-width: 30vw;
-    object-fit: contain;
-    pointer-events: all;
-    user-select: none;
-    cursor: pointer;
+    bottom: 5vh; right: 10vw;
+    height: 20vh; max-width: 30vw;
+    object-fit: contain; pointer-events: all; user-select: none; cursor: pointer;
   }
-  #girl_after {
-    display: none;
-  }
+  #girl_after { display: none; }
   #arrow {
     position: absolute;
-    bottom: 15vh;
-    right: 25vw;
-    height: 6vh;
-    max-width: 6vw;
-    pointer-events: none;
-    user-select: none;
-    z-index: 5;
-    display: none;
+    bottom: 15vh; right: 25vw;
+    height: 6vh; max-width: 6vw;
+    pointer-events: none; user-select: none; z-index: 5; display: none;
     transition: bottom 1.3s linear, right 1.3s linear;
   }
-  /* Make Ravana very large on mobile */
+  /* Ravana bigger on mobile */
   @media (max-width: 600px) {
     #ravana {
-      top: 5vh;
-      left: -22vw;
+      top: 10vh;
+      left: -10vw;
       height: 45vh;
-      max-width: 110vw;
+      max-width: 70vw;
     }
   }
   @media (min-width: 700px), (orientation: landscape) {
     #ravana {
       top: 15vh;
-      left: 20vw;
+      left: 15vw;
       height: 60vh;
-      max-width: 35vw;
+      max-width: 30vw;
     }
     #girl, #girl_after {
       bottom: 8vh;
       right: 15vw;
-      height: 40vh;
-      max-width: 20vw;
+      height: 30vh;
+      max-width: 30vw;
     }
     #arrow {
       bottom: 20vh;
@@ -123,7 +102,6 @@
     const arrowStartRight = parseFloat(window.getComputedStyle(arrow).right);
     const arrowStartBottom = parseFloat(window.getComputedStyle(arrow).bottom);
 
-    // Approximate target position near Ravana
     const arrowEndRight = window.innerWidth * 0.75;
     const arrowEndBottom = window.innerHeight * 0.75;
 
@@ -137,18 +115,11 @@
 
     setTimeout(() => {
       arrow.style.display = 'none';
-      ravana.style.opacity = 0;
+      // Change Ravana to burned image and update message
+      ravana.src = 'ravan-burned.png';
       message.textContent = 'Ravana is burned! Happy Dussehra! 🎉';
+      // No replay or reset here
     }, 1300);
-
-    setTimeout(() => {
-      ravana.style.opacity = 1;
-      girl.style.display = 'block';
-      girl_after.style.display = 'none';
-      message.textContent = 'Aim and click the arrow to burn Ravana!';
-      arrow.style.right = arrowStartRight + 'px';
-      arrow.style.bottom = arrowStartBottom + 'px';
-    }, 4600);
   }
 
   girl.addEventListener('click', animateShot);
@@ -156,4 +127,3 @@
 </script>
 </body>
 </html>
-
