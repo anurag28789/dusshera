@@ -17,6 +17,7 @@
     width: 100vw; height: 100vh;
     touch-action: manipulation;
     user-select: none;
+    overflow: hidden;
   }
   #message {
     width: 90%;
@@ -32,7 +33,7 @@
     position: absolute;
     top: 15vh;
     left: -9vw;
-    height: 40vh;
+    height: 50vh;
     max-width: 70vw;
     object-fit: contain;
     pointer-events: none;
@@ -77,31 +78,32 @@
     transition: bottom 1.3s linear, right 1.3s linear;
   }
 
-  /* Corrected CSS for Arrow Trail Fire */
+  /* Fire trail for arrow */
   .arrow-fire {
     position: absolute;
     background-color: yellow;
     border-radius: 50%;
     animation: fire-fade-out 0.8s forwards;
     pointer-events: none;
+    will-change: transform, opacity;
   }
   @keyframes fire-fade-out {
     from { opacity: 1; transform: scale(1); }
     to { opacity: 0; transform: scale(0); }
   }
 
-  /* CSS for Fireworks */
+  /* Fireworks sparks */
   .firework-spark {
     position: absolute;
     border-radius: 50%;
     animation: spark-burst 1.5s ease-out forwards;
     pointer-events: none;
+    will-change: transform, opacity;
   }
   @keyframes spark-burst {
     from { transform: scale(0); opacity: 1; }
     to { transform: scale(1.5); opacity: 0; }
   }
-
   .spark-red { background-color: #ff4500; width: 4px; height: 4px; }
   .spark-yellow { background-color: #ffd700; width: 6px; height: 6px; }
   .spark-blue { background-color: #1e90ff; width: 5px; height: 5px; }
@@ -110,7 +112,7 @@
     #ravana {
       top: 35vh;
       left: 15vw;
-      height: 60vh;
+      height: 40vh;
       max-width: 30vw;
     }
     #click-here {
@@ -136,20 +138,25 @@
 <body>
 <div id="game-container">
   <div id="message">
-    Hey Sweetie, today you’re not just burning Ravana—
-    you’re burning your worries, fears, and all that weighs you down.
-    Stand tall, take that arrow of courage, and set your spirit free.
+    Hey Sweetie, today you’re not just burning Ravana— 
+    you’re burning your worries, fears, and all that weighs you down. 
+    Stand tall, take that arrow of courage, and set your spirit free. 
     This is your new beginning.
   </div>
+
   <img id="ravana" src="ravan-animated.png" alt="Ravana" />
   <div id="click-here">Click Here →</div>
   <img id="girl" src="archer.png" alt="Girl before shot" />
   <img id="girl_after" src="archerwithout aero.jpg" alt="Girl after shot" />
   <img id="arrow" src="aero.jpg" alt="Arrow" />
 
-  <audio id="fireworks-sound" src="https://gfxsounds.com/wp-content/uploads/2024/01/Fireworks-display-explosions-short-2.mp3" preload="auto"></audio>
+  <audio id="fireworks-sound"
+    src="https://gfxsounds.com/wp-content/uploads/2024/01/Fireworks-display-explosions-short-2.mp3"
+    preload="auto"></audio>
 </div>
+
 <script>
+  const gameContainer = document.getElementById('game-container');
   const ravana = document.getElementById('ravana');
   const girl = document.getElementById('girl');
   const girl_after = document.getElementById('girl_after');
@@ -167,25 +174,26 @@
     for (let i = 0; i < numSparks; i++) {
       const spark = document.createElement('div');
       spark.classList.add('firework-spark', colors[Math.floor(Math.random() * colors.length)]);
-      
       const angle = Math.random() * 2 * Math.PI;
       const endX = x + radius * Math.cos(angle);
       const endY = y + radius * Math.sin(angle);
-      
       spark.style.left = `${x}px`;
       spark.style.top = `${y}px`;
-      
-      spark.animate([
-        { transform: `translate(-50%, -50%)`, opacity: 1 },
-        { transform: `translate(-50%, -50%) translateX(${endX - x}px) translateY(${endY - y}px)`, opacity: 0 }
-      ], {
-        duration: Math.random() * 1000 + 1000,
-        easing: 'ease-out',
-        fill: 'forwards',
-        delay: Math.random() * 500
+
+      gameContainer.appendChild(spark);
+
+      requestAnimationFrame(() => {
+        spark.animate([
+          { transform: `translate(-50%, -50%)`, opacity: 1 },
+          { transform: `translate(-50%, -50%) translateX(${endX - x}px) translateY(${endY - y}px)`, opacity: 0 }
+        ], {
+          duration: Math.random() * 1000 + 1000,
+          easing: 'ease-out',
+          fill: 'forwards',
+          delay: Math.random() * 500
+        });
       });
 
-      document.body.appendChild(spark);
       setTimeout(() => spark.remove(), 2500);
     }
   }
@@ -209,22 +217,20 @@
     trailParticle.style.height = trailParticle.style.width;
     trailParticle.style.left = `${arrowRect.left + arrowRect.width / 2}px`;
     trailParticle.style.top = `${arrowRect.top + arrowRect.height / 2}px`;
-    document.body.appendChild(trailParticle);
+    gameContainer.appendChild(trailParticle);
     setTimeout(() => trailParticle.remove(), 800);
   }
 
   function animateShot() {
-    fireworksSound.play();
+    // Play sound immediately to satisfy mobile gesture
+    try { fireworksSound.play(); } catch (e) {}
 
     girl.style.display = 'none';
     girl_after.style.display = 'block';
     arrow.style.display = 'block';
     clickHere.style.display = 'none';
 
-    const arrowStartRight = parseFloat(window.getComputedStyle(arrow).right);
-    const arrowStartBottom = parseFloat(window.getComputedStyle(arrow).bottom);
     const ravanaRect = ravana.getBoundingClientRect();
-
     const arrowEndRight = window.innerWidth - (ravanaRect.left + ravanaRect.width / 2);
     const arrowEndBottom = window.innerHeight - (ravanaRect.top + ravanaRect.height / 2);
 
@@ -238,16 +244,18 @@
     setTimeout(() => {
       arrow.style.display = 'none';
       ravana.src = 'ravan-burned.png';
-      message.textContent = `You did it, Sweetie!\nYou lit up your path by letting go of what held you back.\nHappy Dussehra, my dear!\nMay the days ahead be filled with light, laughter, big dreams, and a heart full of joy.\nTogether, we celebrate your strength and every beautiful victory.`;
-      
+      message.textContent =
+        `You did it, Sweetie!\nYou lit up your path by letting go of what held you back.\n` +
+        `Happy Dussehra, my dear!\nMay the days ahead be filled with light, laughter, big dreams, and a heart full of joy.\n` +
+        `Together, we celebrate your strength and every beautiful victory.`;
+
       fireOffFireworks();
       clearInterval(arrowTrailInterval);
-      
     }, 1300);
   }
 
   girl.addEventListener('click', animateShot);
-  girl.addEventListener('touchend', animateShot);
+  girl.addEventListener('touchstart', animateShot); // use touchstart for faster mobile response
 </script>
 </body>
 </html>
