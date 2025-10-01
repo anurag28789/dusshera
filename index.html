@@ -76,52 +76,35 @@
     display: none;
     transition: bottom 1.3s linear, right 1.3s linear;
   }
-  .arrow-trail-particle {
+
+  /* Corrected CSS for Arrow Trail Fire */
+  .arrow-fire {
     position: absolute;
-    background-color: rgba(255, 204, 0, 0.8);
+    background-color: yellow;
     border-radius: 50%;
+    animation: fire-fade-out 0.8s forwards;
     pointer-events: none;
-    opacity: 0;
-    animation: trail-fade 1s forwards;
   }
-  @keyframes trail-fade {
+  @keyframes fire-fade-out {
     from { opacity: 1; transform: scale(1); }
     to { opacity: 0; transform: scale(0); }
   }
 
-  /* New CSS for the fireworks display */
-  .firework {
+  /* CSS for Fireworks */
+  .firework-spark {
     position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 100;
-  }
-  .firework .spark {
-    position: absolute;
-    background-color: transparent;
     border-radius: 50%;
-    animation-name: spark-burst;
-    animation-timing-function: ease-out;
-    animation-fill-mode: forwards;
+    animation: spark-burst 1.5s ease-out forwards;
+    pointer-events: none;
   }
-
   @keyframes spark-burst {
-    from {
-      transform: scale(0) translate(0, 0);
-      opacity: 1;
-    }
-    to {
-      transform: scale(1) translate(var(--x), var(--y));
-      opacity: 0;
-    }
+    from { transform: scale(0); opacity: 1; }
+    to { transform: scale(1.5); opacity: 0; }
   }
 
-  /* Different colors and sizes for sparks */
-  .spark.red { background-color: #ff0000; width: 4px; height: 4px; }
-  .spark.yellow { background-color: #ffff00; width: 6px; height: 6px; }
-  .spark.blue { background-color: #0000ff; width: 5px; height: 5px; }
+  .spark-red { background-color: #ff4500; width: 4px; height: 4px; }
+  .spark-yellow { background-color: #ffd700; width: 6px; height: 6px; }
+  .spark-blue { background-color: #1e90ff; width: 5px; height: 5px; }
 
   @media (min-width: 700px), (orientation: landscape) {
     #ravana {
@@ -176,73 +159,61 @@
   const fireworksSound = document.getElementById('fireworks-sound');
   let arrowTrailInterval;
 
-  // New function to create a single firework burst
-  function createFirework(x, y) {
-    const firework = document.createElement('div');
-    firework.classList.add('firework');
-    document.body.appendChild(firework);
-
-    const colors = ['red', 'yellow', 'blue'];
+  function createFireworkBurst(x, y) {
     const numSparks = 80;
+    const colors = ['spark-red', 'spark-yellow', 'spark-blue'];
+    const radius = 100;
 
     for (let i = 0; i < numSparks; i++) {
       const spark = document.createElement('div');
-      const color = colors[Math.floor(Math.random() * colors.length)];
-      spark.classList.add('spark', color);
-
+      spark.classList.add('firework-spark', colors[Math.floor(Math.random() * colors.length)]);
+      
       const angle = Math.random() * 2 * Math.PI;
-      const distance = Math.random() * 150 + 50;
-      const duration = Math.random() * 1 + 1.5;
-      const delay = Math.random() * 0.5;
-
-      const endX = distance * Math.cos(angle);
-      const endY = distance * Math.sin(angle);
-
+      const endX = x + radius * Math.cos(angle);
+      const endY = y + radius * Math.sin(angle);
+      
       spark.style.left = `${x}px`;
       spark.style.top = `${y}px`;
-      spark.style.setProperty('--x', `${endX}px`);
-      spark.style.setProperty('--y', `${endY}px`);
-      spark.style.animationDuration = `${duration}s`;
-      spark.style.animationDelay = `${delay}s`;
+      
+      spark.animate([
+        { transform: `translate(-50%, -50%)`, opacity: 1 },
+        { transform: `translate(-50%, -50%) translateX(${endX - x}px) translateY(${endY - y}px)`, opacity: 0 }
+      ], {
+        duration: Math.random() * 1000 + 1000,
+        easing: 'ease-out',
+        fill: 'forwards',
+        delay: Math.random() * 500
+      });
 
-      firework.appendChild(spark);
+      document.body.appendChild(spark);
+      setTimeout(() => spark.remove(), 2500);
     }
-
-    setTimeout(() => {
-      firework.remove();
-    }, 2500);
   }
 
-  // Function to create multiple firework bursts
   function fireOffFireworks() {
     const numBursts = 15;
     for (let i = 0; i < numBursts; i++) {
-      const delay = i * 400 + Math.random() * 200;
       setTimeout(() => {
         const x = Math.random() * window.innerWidth;
         const y = Math.random() * window.innerHeight * 0.5;
-        createFirework(x, y);
-      }, delay);
+        createFireworkBurst(x, y);
+      }, i * 400 + Math.random() * 200);
     }
   }
 
-  // New function to create the arrow trail
   function createArrowTrail() {
     const arrowRect = arrow.getBoundingClientRect();
     const trailParticle = document.createElement('div');
-    trailParticle.classList.add('arrow-trail-particle');
+    trailParticle.classList.add('arrow-fire');
     trailParticle.style.width = `${Math.random() * 5 + 3}px`;
     trailParticle.style.height = trailParticle.style.width;
     trailParticle.style.left = `${arrowRect.left + arrowRect.width / 2}px`;
     trailParticle.style.top = `${arrowRect.top + arrowRect.height / 2}px`;
     document.body.appendChild(trailParticle);
-    setTimeout(() => {
-      trailParticle.remove();
-    }, 1000);
+    setTimeout(() => trailParticle.remove(), 800);
   }
 
   function animateShot() {
-    // THIS IS THE FIX: Play the sound immediately on the user's click
     fireworksSound.play();
 
     girl.style.display = 'none';
@@ -252,15 +223,12 @@
 
     const arrowStartRight = parseFloat(window.getComputedStyle(arrow).right);
     const arrowStartBottom = parseFloat(window.getComputedStyle(arrow).bottom);
+    const ravanaRect = ravana.getBoundingClientRect();
 
-    const arrowEndRight = window.innerWidth * 0.75;
-    const arrowEndBottom = window.innerHeight * 0.75;
+    const arrowEndRight = window.innerWidth - (ravanaRect.left + ravanaRect.width / 2);
+    const arrowEndBottom = window.innerHeight - (ravanaRect.top + ravanaRect.height / 2);
 
-    // Start the arrow trail animation
     arrowTrailInterval = setInterval(createArrowTrail, 20);
-
-    arrow.style.right = arrowStartRight + 'px';
-    arrow.style.bottom = arrowStartBottom + 'px';
 
     setTimeout(() => {
       arrow.style.right = arrowEndRight + 'px';
@@ -270,16 +238,9 @@
     setTimeout(() => {
       arrow.style.display = 'none';
       ravana.src = 'ravan-burned.png';
-      
       message.textContent = `You did it, Sweetie!\nYou lit up your path by letting go of what held you back.\nHappy Dussehra, my dear!\nMay the days ahead be filled with light, laughter, big dreams, and a heart full of joy.\nTogether, we celebrate your strength and every beautiful victory.`;
       
-      const ravanaRect = ravana.getBoundingClientRect();
-      const ravanaX = ravanaRect.left + ravanaRect.width / 2;
-      const ravanaY = ravanaRect.top + ravanaRect.height / 2;
-
       fireOffFireworks();
-      
-      // Stop the arrow trail animation
       clearInterval(arrowTrailInterval);
       
     }, 1300);
