@@ -12,9 +12,9 @@
 
   #game-container {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: space-between;
-    align-items: flex-end;
+    align-items: center;
     width: 100vw;
     height: 100vh;
     position: relative;
@@ -37,21 +37,22 @@
   }
 
   #ravana {
-    max-width: 50vw;
-    width: auto;
-    height: 60vh;
+    height: 45vh;
+    max-width: 80vw;
     object-fit: contain;
     user-select: none;
     pointer-events: none;
+    align-self: center;
   }
 
   #girl, #girl_after {
-    max-width: 30vw;
-    width: auto;
-    height: 25vh;
+    height: 15vh;
+    max-width: 40vw;
     object-fit: contain;
     user-select: none;
     pointer-events: all;
+    align-self: flex-end;
+    margin-right: 5vw;
   }
 
   #girl_after { display: none; }
@@ -68,67 +69,33 @@
     pointer-events: none;
   }
 
-  /* Landscape specific styles */
-  @media (orientation: landscape) {
-    #message { font-size: 5vw; top: 2vh; }
+  /* Landscape and desktop styles */
+  @media (min-width: 700px), (orientation: landscape) {
+    #game-container {
+      flex-direction: row;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: 0 10vw;
+    }
 
     #ravana {
       height: 70vh;
-      max-width: 40vw;
-      margin-left: 10vw;
+      max-width: 35vw;
+      margin: 0;
+      align-self: flex-end;
     }
 
     #girl, #girl_after {
       height: 45vh;
-      max-width: 25vw;
-      margin-right: 10vw;
+      max-width: 30vw;
+      margin: 0;
       align-self: flex-end;
     }
 
     #arrow {
       height: 8vh;
-      right: 25vw;
-      bottom: 25vh;
-    }
-  }
-
-  /* Desktop view */
-  @media (min-width: 701px) {
-    #message { font-size: 6vw; top: 2vh; }
-
-    #ravana {
-      height: 75vh;
-      max-width: 35vw;
-      margin-left: 10vw;
-    }
-
-    #girl, #girl_after {
-      height: 27vh;
-      max-width: 20vw;
-      margin-right: 5vw;
-      align-self: flex-end;
-    }
-
-    #arrow {
-      height: 8vh;
-      right: 18vw;
-      bottom: 14vh;
-    }
-  }
-
-  /* Adjust for very small devices in portrait */
-  @media (max-device-width: 600px) and (orientation: portrait) {
-    #ravana {
-      height: 40vh;
-      max-width: 80vw;
-      margin-left: 2vw;
-    }
-
-    #girl, #girl_after {
-      height: 20vh;
-      max-width: 50vw;
-      margin-right: 2vw;
-      align-self: flex-end;
+      right: 20vw;
+      bottom: 15vh;
     }
   }
 </style>
