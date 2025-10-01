@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Interactive Dussehra Game</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body, html {
+    margin: 0; padding: 0; background: #f9f0e9; width: 100vw; height: 100vh;
+    overflow: hidden; font-family: Arial, sans-serif;
+  }
+
+  #game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    touch-action: manipulation;
+  }
+
+  #message {
+    position: absolute;
+    top: 2vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 6vw;
+    color: #d35400;
+    text-align: center;
+    z-index: 10;
+    text-shadow: 1px 1px 4px #fff;
+    width: 96vw;
+    max-width: 98vw;
+  }
+
+  #ravana {
+    position: absolute;
+    left: 10vw;
+    top: 6vh;
+    height: 75vh;
+    z-index: 2;
+    transition: opacity 1s;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  #girl, #girl_after {
+    position: absolute;
+    right: 5vw;
+    bottom: 0;
+    height: 27vh;
+    z-index: 2;
+    transition: opacity 0.5s;
+    user-select: none;
+    pointer-events: all;
+  }
+
+  #girl_after { display: none; }
+
+  #arrow {
+    position: absolute;
+    right: 18vw;
+    bottom: 14vh;
+    height: 8vh;
+    z-index: 5;
+    display: none;
+    transition: right 1.3s linear, bottom 1.3s linear;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  @media (max-width: 700px) {
+    #message { font-size: 7vw; top: 2vh; }
+    #ravana { 
+        height: 50vh; 
+        top: 15vh; 
+        left: 5vw; /* Move Ravana to the left side */
+        transform: none; 
+    }
+    #girl, #girl_after { 
+        height: 22vh; 
+        right: 5vw; /* Move archer to the right side */
+        bottom: 5vh; 
+        transform: none; 
+    }
+    #arrow { 
+        height: 5vh; 
+        right: 10vw; /* Start arrow from archer's new position */
+        bottom: 12vh; 
+        transform: none; 
+    }
+  }
+</style>
+</head>
+<body>
+<div id="game-container">
+  <div id="message">Aim and click the arrow to burn Ravana!</div>
+  <img id="ravana" src="ravan-animated.png" alt="Ravana" />
+  <img id="girl" src="archer.png" alt="Girl before shot" />
+  <img id="girl_after" src="archerwithout aero.jpg" alt="Girl after shot" />
+  <img id="arrow" src="aero.jpg" alt="Arrow" />
+</div>
+
+<script>
+  const ravana = document.getElementById('ravana');
+  const girl = document.getElementById('girl');
+  const girl_after = document.getElementById('girl_after');
+  const arrow = document.getElementById('arrow');
+  const message = document.getElementById('message');
+
+  function animateShot() {
+    girl.style.display = 'none';
+    girl_after.style.display = 'block';
+    arrow.style.display = 'block';
+
+    const isMobile = window.matchMedia("(max-width: 700px)").matches;
+    let arrowEndRight, arrowEndBottom;
+
+    if (isMobile) {
+      // Set the initial position of the arrow
+      arrow.style.right = '10vw';
+      arrow.style.bottom = '12vh';
+
+      // Set the end position for the arrow to hit the new Ravana position
+      arrowEndRight = '65vw'; 
+      arrowEndBottom = '45vh';
+
+    } else {
+      arrow.style.right = '18vw';
+      arrow.style.bottom = '14vh';
+      arrowEndRight = '75vw';
+      arrowEndBottom = '58vh';
+    }
+
+    // Arrow flight path adjusted to hit Ravana
+    setTimeout(() => {
+      arrow.style.right = arrowEndRight;
+      arrow.style.bottom = arrowEndBottom;
+    }, 40);
+
+    setTimeout(() => {
+      arrow.style.display = 'none';
+      ravana.style.opacity = 0;
+      message.textContent = 'Ravana is burned! Happy Dussehra! 🎉';
+    }, 1300);
+
+    setTimeout(() => {
+      ravana.style.opacity = 1;
+      girl.style.display = 'block';
+      girl_after.style.display = 'none';
+      message.textContent = 'Aim and click the arrow to burn Ravana!';
+    }, 4600);
+  }
+
+  girl.addEventListener('click', animateShot);
+  girl.addEventListener('touchend', animateShot);
+</script>
+</body>
+</html>
