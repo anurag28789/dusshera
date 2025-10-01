@@ -22,7 +22,7 @@
     top: 2vh;
     left: 50%;
     transform: translateX(-50%);
-    font-size: 6vw;
+    font-size: 7vw;
     color: #d35400;
     text-align: center;
     z-index: 10;
@@ -31,11 +31,12 @@
     max-width: 98vw;
   }
 
+  /* Default styles for mobile portrait view */
   #ravana {
     position: absolute;
-    left: 10vw;
-    top: 6vh;
-    height: 75vh;
+    height: 60vh;
+    top: 10vh;
+    left: 5vw;
     z-index: 2;
     transition: opacity 1s;
     user-select: none;
@@ -44,9 +45,9 @@
 
   #girl, #girl_after {
     position: absolute;
+    height: 25vh;
     right: 5vw;
-    bottom: 0;
-    height: 27vh;
+    bottom: 5vh;
     z-index: 2;
     transition: opacity 0.5s;
     user-select: none;
@@ -57,9 +58,9 @@
 
   #arrow {
     position: absolute;
-    right: 18vw;
-    bottom: 14vh;
-    height: 8vh;
+    height: 5vh;
+    right: 15vw;
+    bottom: 12vh;
     z-index: 5;
     display: none;
     transition: right 1.3s linear, bottom 1.3s linear;
@@ -67,45 +68,19 @@
     pointer-events: none;
   }
 
-  /* Styles for mobile portrait view */
-  @media (orientation: portrait) and (max-width: 700px) {
-    #message { font-size: 7vw; top: 2vh; }
-    
-    #ravana { 
-      height: 60vh;
-      top: 10vh;
-      left: 5vw;
-      transform: none; 
-    }
-    
-    #girl, #girl_after { 
-      height: 25vh;
-      right: 5vw;
-      bottom: 5vh;
-      transform: none; 
-    }
-    
-    #arrow { 
-      height: 5vh; 
-      right: 15vw;
-      bottom: 12vh;
-      transform: none; 
-    }
-  }
-
-  /* New styles for mobile landscape view */
-  @media (orientation: landscape) and (max-height: 700px) {
+  /* Styles for mobile landscape view */
+  @media (orientation: landscape) {
     #message { font-size: 5vw; top: 2vh; }
 
     #ravana {
-      height: 80vh; 
-      left: 5vw;
-      top: 10vh;
+      height: 70vh;
+      left: 10vw;
+      top: 15vh;
     }
     
     #girl, #girl_after {
       height: 50vh;
-      right: 5vw;
+      right: 10vw;
       bottom: 5vh;
     }
 
@@ -113,6 +88,29 @@
       height: 8vh;
       right: 25vw;
       bottom: 25vh;
+    }
+  }
+
+  /* Styles for desktop use */
+  @media (min-width: 701px) {
+    #message { font-size: 6vw; top: 2vh; }
+    
+    #ravana { 
+      height: 75vh;
+      top: 6vh;
+      left: 10vw;
+    }
+    
+    #girl, #girl_after { 
+      height: 27vh;
+      right: 5vw;
+      bottom: 0;
+    }
+    
+    #arrow { 
+      height: 8vh; 
+      right: 18vw;
+      bottom: 14vh;
     }
   }
 </style>
@@ -138,16 +136,22 @@
     girl_after.style.display = 'block';
     arrow.style.display = 'block';
 
-    const isLandscape = window.matchMedia("(orientation: landscape) and (max-height: 700px)").matches;
+    const isLandscape = window.matchMedia("(orientation: landscape)").matches;
+    const isDesktop = window.matchMedia("(min-width: 701px)").matches;
     let arrowEndRight, arrowEndBottom;
 
-    if (isLandscape) {
+    if (isLandscape && !isDesktop) {
       arrow.style.right = '25vw';
       arrow.style.bottom = '25vh';
       arrowEndRight = '80vw'; 
       arrowEndBottom = '35vh';
+    } else if (isDesktop) {
+      arrow.style.right = '18vw';
+      arrow.style.bottom = '14vh';
+      arrowEndRight = '75vw';
+      arrowEndBottom = '58vh';
     } else {
-      // Styles for portrait and desktop
+      // Default portrait mobile styles
       arrow.style.right = '15vw';
       arrow.style.bottom = '12vh';
       arrowEndRight = '75vw'; 
