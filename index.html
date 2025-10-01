@@ -69,21 +69,29 @@
 
   @media (max-width: 700px) {
     #message { font-size: 7vw; top: 2vh; }
+    
+    /* MODIFIED Ravana position for mobile */
     #ravana { 
       height: 50vh; 
-      top: 20vh; /* Adjust Ravana's vertical position */
-      left: 5vw; /* Move Ravana to the left side */
+      top: 20vh;
+      left: 15vw; /* Moved Ravana to the left from 5vw to 15vw */
       transform: none; 
     }
+    
+    /* MODIFIED Archer Girl position for mobile */
     #girl, #girl_after { 
       height: 22vh; 
-      right: 5vw; /* Keep archer on the right side */
-      bottom: 2vh; /* Move archer up slightly from the bottom */
+      right: initial; /* Remove right property */
+      left: 12vw; /* Use left property to position the girl */
+      bottom: 2vh; 
       transform: none; 
     }
+    
+    /* MODIFIED Arrow position for mobile */
     #arrow { 
       height: 5vh; 
-      right: 10vw; /* Adjust starting position to align with archer */
+      right: initial; /* Remove right property */
+      left: 20vw; /* Adjust starting position to align with archer */
       bottom: 12vh; /* Adjust starting position to align with archer */
       transform: none; 
     }
@@ -112,15 +120,15 @@
     arrow.style.display = 'block';
 
     const isMobile = window.matchMedia("(max-width: 700px)").matches;
-    let arrowEndRight, arrowEndBottom;
+    let arrowEndRight, arrowEndBottom, arrowEndLeft;
 
     if (isMobile) {
       // Set the initial position of the arrow
-      arrow.style.right = '10vw';
+      arrow.style.left = '20vw'; /* Using left instead of right */
       arrow.style.bottom = '12vh';
 
       // Set the end position for the arrow to hit the new Ravana position
-      arrowEndRight = '65vw'; 
+      arrowEndLeft = '50vw'; /* New value to move the arrow left */
       arrowEndBottom = '45vh';
 
     } else {
@@ -132,8 +140,13 @@
 
     // Arrow flight path adjusted to hit Ravana
     setTimeout(() => {
-      arrow.style.right = arrowEndRight;
-      arrow.style.bottom = arrowEndBottom;
+      if (isMobile) {
+        arrow.style.left = arrowEndLeft;
+        arrow.style.bottom = arrowEndBottom;
+      } else {
+        arrow.style.right = arrowEndRight;
+        arrow.style.bottom = arrowEndBottom;
+      }
     }, 40);
 
     setTimeout(() => {
