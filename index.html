@@ -1,157 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <title>Anurag’s Exclusive Maggi Party 🎉</title>
-    <style>
-        body {
-            background: #ffe066;
-            font-family: 'Segoe UI', Arial, sans-serif;
-            text-align: center;
-            padding: 40px 0;
-        }
-        .big-title {
-            font-size: 2.4em;
-            margin-bottom: 20px;
-            color: #d72638;
-            transition: color 0.3s ease;
-        }
-        .image-row {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 20px;
-        }
-        .image-row img {
-            width: 170px;
-            margin: 12px 16px;
-            border-radius: 16px;
-            border: 4px solid #ffca3a;
-            box-shadow: 1px 4px 18px #e1ad01cc;
-            transition: transform 0.2s;
-        }
-        .image-row img:hover {
-            transform: scale(1.07) rotate(-2deg);
-        }
-        .tease-btn {
-            display: inline-block;
-            margin: 20px 16px;
-            padding: 18px 34px;
-            font-size: 1.25em;
-            border-radius: 30px;
-            border: none;
-            background: #d72638;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
-            outline: none;
-            box-shadow: 2px 3px 14px #fb9300bb;
-            transition: background 0.18s;
-        }
-        .tease-btn:hover {
-            background: #ff6767;
-        }
-        .popup {
-            margin: 30px auto;
-            padding: 22px 26px;
-            display: none;
-            font-size: 1.25em;
-            background: #fffbe6;
-            border: 2.5px dashed #e1ad01;
-            border-radius: 14px;
-            color: #d72638;
-            width: 340px;
-            box-shadow: 0 3px 12px #ffe06644;
-        }
-        .lockout {
-            display: none;
-            margin-top: 65px;
-            font-size: 2em;
-            color: #d72638;
-        }
-        #penguinGif {
-            display: none;
-            margin: 20px auto;
-            width: 160px;
-        }
-    </style>
+<meta charset="UTF-8" />
+<title>Interactive Dussehra Game</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body, html {
+    margin: 0; padding: 0; background: #f9f0e9; width: 100vw; height: 100vh;
+    overflow: hidden; font-family: Arial, sans-serif;
+  }
+
+  #game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    touch-action: manipulation;
+  }
+
+  #message {
+    position: absolute;
+    top: 2vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 6vw;
+    color: #d35400;
+    text-align: center;
+    z-index: 10;
+    text-shadow: 1px 1px 4px #fff;
+    width: 96vw;
+    max-width: 98vw;
+  }
+
+  #ravana {
+    position: absolute;
+    left: 10vw;
+    top: 6vh;
+    height: 75vh;
+    z-index: 2;
+    transition: opacity 1s;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  #girl, #girl_after {
+    position: absolute;
+    right: 5vw;
+    bottom: 0;
+    height: 27vh;
+    z-index: 2;
+    transition: opacity 0.5s;
+    user-select: none;
+    pointer-events: all;
+  }
+
+  #girl_after { display: none; }
+
+  #arrow {
+    position: absolute;
+    right: 18vw;
+    bottom: 14vh;
+    height: 8vh;
+    z-index: 5;
+    display: none;
+    transition: right 1.3s linear, bottom 1.3s linear;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  @media (max-width: 700px) {
+    #message { font-size: 7vw; top: 2vh; }
+    #ravana { 
+        height: 50vh; 
+        top: 15vh; 
+        left: 5vw; /* Move Ravana to the left side */
+        transform: none; 
+    }
+    #girl, #girl_after { 
+        height: 22vh; 
+        right: 5vw; /* Move archer to the right side */
+        bottom: 5vh; 
+        transform: none; 
+    }
+    #arrow { 
+        height: 5vh; 
+        right: 10vw; /* Start arrow from archer's new position */
+        bottom: 12vh; 
+        transform: none; 
+    }
+  }
+</style>
 </head>
 <body>
-    <div class="big-title" id="title">Anurag’s Exclusive Maggi Party 🎉</div>
+<div id="game-container">
+  <div id="message">Aim and click the arrow to burn Ravana!</div>
+  <img id="ravana" src="ravan-animated.png" alt="Ravana" />
+  <img id="girl" src="archer.png" alt="Girl before shot" />
+  <img id="girl_after" src="archerwithout aero.jpg" alt="Girl after shot" />
+  <img id="arrow" src="aero.jpg" alt="Arrow" />
+</div>
 
-    <div class="image-row" id="imageRow">
-        <img src="image1.gif" alt="Maggi GIF 1" />
-        <img src="image2.gif" alt="Maggi GIF 2" />
-    </div>
+<script>
+  const ravana = document.getElementById('ravana');
+  const girl = document.getElementById('girl');
+  const girl_after = document.getElementById('girl_after');
+  const arrow = document.getElementById('arrow');
+  const message = document.getElementById('message');
 
-    <div>
-        <button class="tease-btn" onclick="teaseClick(0)">Want a Bite?</button>
-        <button class="tease-btn" onclick="teaseClick(1)">Feeling Jealous?</button>
-        <button class="tease-btn" onclick="teaseClick(2)">Steal My Maggi!</button>
-        <button class="tease-btn" onclick="teaseClick(3)">One Last Chance</button>
-    </div>
+  function animateShot() {
+    girl.style.display = 'none';
+    girl_after.style.display = 'block';
+    arrow.style.display = 'block';
 
-    <div class="popup" id="popup"></div>
-    <img id="penguinGif" src="image3.gif" alt="Penguin GIF" />
-    <div class="lockout" id="lockout-msg">
-        Better luck next time! <br>
-        Maggi party is over for you 😜
-    </div>
+    const isMobile = window.matchMedia("(max-width: 700px)").matches;
+    let arrowEndRight, arrowEndBottom;
 
-    <script>
-        const messages = [
-            "Oops! Maggi is only for me 😋<br>Try again, maybe you’ll get lucky!",
-            "Nice try! But this Maggi is tasting extra yummy today 😝",
-            "Aww, getting jealous? You should seriously join my Maggi club! 😂",
-            "No stealing! Yeh Maggi mere liye hi bani hai. <br> Khao toh sirf virtuaaaaaaal bite!"
-        ];
-        let clickCount = 0;
-        const maxClicks = 5;
+    if (isMobile) {
+      // Set the initial position of the arrow
+      arrow.style.right = '10vw';
+      arrow.style.bottom = '12vh';
 
-        function teaseClick(idx) {
-            if (clickCount >= maxClicks) {
-                return;
-            }
-            const popup = document.getElementById('popup');
-            const penguinGif = document.getElementById('penguinGif');
-            const imageRow = document.getElementById('imageRow');
-            const title = document.getElementById('title');
+      // Set the end position for the arrow to hit the new Ravana position
+      arrowEndRight = '65vw'; 
+      arrowEndBottom = '45vh';
 
-            popup.style.display = "block";
-            popup.innerHTML = messages[idx % messages.length];
+    } else {
+      arrow.style.right = '18vw';
+      arrow.style.bottom = '14vh';
+      arrowEndRight = '75vw';
+      arrowEndBottom = '58vh';
+    }
 
-            // Reset title color and text style for all except 'steal' case
-            title.style.color = '#d72638';
-            title.style.fontWeight = 'normal';
+    // Arrow flight path adjusted to hit Ravana
+    setTimeout(() => {
+      arrow.style.right = arrowEndRight;
+      arrow.style.bottom = arrowEndBottom;
+    }, 40);
 
-            if (idx === 2) {
-                imageRow.style.display = "none";
-                penguinGif.style.display = "block";
+    setTimeout(() => {
+      arrow.style.display = 'none';
+      ravana.style.opacity = 0;
+      message.textContent = 'Ravana is burned! Happy Dussehra! 🎉';
+    }, 1300);
 
-                title.textContent = "Maggi Alarm! Guard On Duty 🚨";
+    setTimeout(() => {
+      ravana.style.opacity = 1;
+      girl.style.display = 'block';
+      girl_after.style.display = 'none';
+      message.textContent = 'Aim and click the arrow to burn Ravana!';
+    }, 4600);
+  }
 
-                alert("Arey! Maggi chhupake kaha le ja rahi ho? 😠");
-            } else {
-                imageRow.style.display = "flex";
-                penguinGif.style.display = "none";
-                title.textContent = "Anurag’s Exclusive Maggi Party 🎉";
-            }
-
-            clickCount++;
-            if (clickCount === maxClicks) {
-                document.querySelectorAll(".tease-btn").forEach(btn => btn.disabled = true);
-                setTimeout(() => {
-                    popup.style.display = "none";
-                    imageRow.style.display = "none";
-                    penguinGif.style.display = "none";
-                    title.textContent = "Maggi Party Over! See you next time 😜";
-                    popup.style.display = "block";
-                    popup.innerHTML = "Thanks for playing! No more Maggi today.";
-                    popup.style.color = 'green';
-                    popup.style.fontWeight = 'bold';
-                }, 1600);
-            }
-        }
-    </script>
+  girl.addEventListener('click', animateShot);
+  girl.addEventListener('touchend', animateShot);
+</script>
 </body>
 </html>
