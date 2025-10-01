@@ -13,7 +13,6 @@
     font-family: Arial, sans-serif;
     overflow: hidden;
   }
-
   #game-container {
     position: relative;
     width: 100vw;
@@ -21,7 +20,6 @@
     touch-action: manipulation;
     user-select: none;
   }
-
   #message {
     position: absolute;
     width: 100%;
@@ -34,7 +32,6 @@
     text-shadow: 1px 1px 4px #fff;
     z-index: 10;
   }
-
   #ravana {
     position: absolute;
     top: 10vh;
@@ -44,8 +41,8 @@
     object-fit: contain;
     pointer-events: none;
     user-select: none;
+    transition: height 0.3s, max-width 0.3s, top 0.3s, left 0.3s;
   }
-
   #girl, #girl_after {
     position: absolute;
     bottom: 5vh;
@@ -57,11 +54,9 @@
     user-select: none;
     cursor: pointer;
   }
-
   #girl_after {
     display: none;
   }
-
   #arrow {
     position: absolute;
     bottom: 15vh;
@@ -74,15 +69,15 @@
     display: none;
     transition: bottom 1.3s linear, right 1.3s linear;
   }
-  
-  /* Larger Ravana size on mobiles */
+  /* Make Ravana very large on mobile */
   @media (max-width: 600px) {
     #ravana {
-      height: 70vh;
-      max-width: 80vw;
+      top: 20vh;
+      left: 5vw;
+      height: 38vh;
+      max-width: 70vw;
     }
   }
-
   @media (min-width: 700px), (orientation: landscape) {
     #ravana {
       top: 15vh;
@@ -90,14 +85,12 @@
       height: 60vh;
       max-width: 30vw;
     }
-
     #girl, #girl_after {
       bottom: 8vh;
       right: 15vw;
       height: 30vh;
       max-width: 15vw;
     }
-
     #arrow {
       bottom: 20vh;
       right: 32vw;
@@ -115,7 +108,6 @@
   <img id="girl_after" src="archerwithout aero.jpg" alt="Girl after shot" />
   <img id="arrow" src="aero.jpg" alt="Arrow" />
 </div>
-
 <script>
   const ravana = document.getElementById('ravana');
   const girl = document.getElementById('girl');
